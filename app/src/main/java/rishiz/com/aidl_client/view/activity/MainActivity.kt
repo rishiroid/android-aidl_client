@@ -26,9 +26,11 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate")
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-        val serviceIntent = Intent(this, LocalService::class.java)
-        startService(serviceIntent)
-        bindService(serviceIntent, viewModel.getServiceConnection(), BIND_AUTO_CREATE)
+        Intent(this, LocalService::class.java).also { serviceIntent ->
+                startService(serviceIntent)
+                bindService(serviceIntent, viewModel.getServiceConnection(), BIND_AUTO_CREATE)
+            }
+
         val btn = findViewById<Button>(R.id.button)
         val isServiceStart = findViewById<TextView>(R.id.isStart)
         btn.setOnClickListener {
@@ -273,5 +275,4 @@ class MainActivity : AppCompatActivity() {
             shadowGravity = CircleView.ShadowGravity.CENTER
         }
     }
-
 }

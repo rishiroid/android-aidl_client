@@ -46,14 +46,14 @@ class LocalService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate")
-//          val intent=Intent("AidlService")
-//          intent.setPackage("rishiz.com.aidl_server")
-
-        val intent = Intent().setClassName(
-            "rishiz.com.aidl_server", "rishiz.com.aidl_server.AidlService"
-        )
-        bindService(intent, aidlserviceConnection, Context.BIND_AUTO_CREATE)
-//        bindServiceAsUser(intent,aidlserviceConnection, BIND_AUTO_CREATE, UserHandle.getUserHandleForUid(0))
+        //If intent action not provided for server side service
+        Intent().setClassName("rishiz.com.aidl_server", "rishiz.com.aidl_server.AidlService").also {
+                bindService(it, aidlserviceConnection, Context.BIND_AUTO_CREATE)
+            }
+        //If intent action provided for server side service
+        Intent("AidlService").setPackage("rishiz.com.aidl_server").also {
+                bindService(it, aidlserviceConnection, Context.BIND_AUTO_CREATE)
+            }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
